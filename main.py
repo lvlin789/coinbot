@@ -212,7 +212,7 @@ def transfer():
             elif amt_in == amt_out and amt_in > 0:
                 # B 多 → B 卖、A 买；价格取买一*1.01
                 px = bid * BUY_FLOAT
-                qty = b_amt
+                qty = amt_in
                 # 下单之前判断px不能大于ask,并且ask必须比px大至少百分之5，如果小于则不进行下单
                 if px > ask:
                     console.print("[yellow]价格不合理，不进行下单[/yellow]")
@@ -238,17 +238,17 @@ def transfer():
             # 4) 简单轮询订单状态（占位，需你在私有代理补充查询/撤单接口）
             time.sleep(0.5)
             if order_id_a:
-                coinone_client_in.cancel_order(QUOTE,CURRENCY)
+                coinone_client_in.cancel_all_orders(QUOTE,CURRENCY)
             if order_id_b:
-                coinone_client_out.cancel_order(QUOTE,CURRENCY)
+                coinone_client_out.cancel_all_orders(QUOTE,CURRENCY)
             console.print("[yellow]已尝试撤单（请实现远端撤单接口以生效）[/yellow]")
             # time.sleep(2)
         except Exception as e:
             # 出现任何异常尽力撤单
             if order_id_a:
-                coinone_client_in.cancel_order(QUOTE,CURRENCY)
+                coinone_client_in.cancel_all_orders(QUOTE,CURRENCY)
             if order_id_b:
-                coinone_client_out.cancel_order(QUOTE,CURRENCY)
+                coinone_client_out.cancel_all_orders(QUOTE,CURRENCY)
             raise e
 
 
