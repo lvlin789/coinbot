@@ -3,7 +3,7 @@
 echo "🚀 开始部署加密货币交易机器人..."
 
 # Git仓库地址
-GIT_REPO="https://github.com/your-username/crypto-bot.git"
+GIT_REPO="https://github.com/lvlin789/coinbot.git"
 
 # 更新系统包
 echo "正在更新系统包..."
