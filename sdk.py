@@ -194,6 +194,47 @@ class CoinoneClient:
             payload["user_order_id"] = user_order_id
         return self._post_v21("/v2.1/order", payload)
 
+
+def place_order(self,
+                    quote_currency: str,
+                    target_currency: str,
+                    side: str,          # "BUY" or "SELL"
+                    type_: str,         # "LIMIT", "MARKET", "STOP_LIMIT"
+                    price: Optional[str] = None,
+                    qty: Optional[str] = None,
+                    amount: Optional[str] = None,
+                    post_only: Optional[bool] = None,
+                    limit_price: Optional[str] = None,
+                    trigger_price: Optional[str] = None,
+                    user_order_id: Optional[str] = None) -> Tuple[Dict, Dict]:
+        """
+        POST /v2.1/order
+        返回包含 order_id 等字段 (result == "success").
+        """
+        payload = {
+            "quote_currency": quote_currency,
+            "target_currency": target_currency,
+            "side": side,
+            "type": type_
+        }
+        # optional params
+        if price is not None:
+            payload["price"] = price
+        if qty is not None:
+            payload["qty"] = qty
+        if amount is not None:
+            payload["amount"] = amount
+        if post_only is not None:
+            payload["post_only"] = bool(post_only)
+        if limit_price is not None:
+            payload["limit_price"] = limit_price
+        if trigger_price is not None:
+            payload["trigger_price"] = trigger_price
+        if user_order_id is not None:
+            payload["user_order_id"] = user_order_id
+        return self._post_v21("/v2.1/order", payload)
+
+        
     def get_balance_all(self):
         """获取账户全部余额 POST /v2.1/account/balance/all"""
         return self._post_v21("/v2.1/account/balance/all", {})

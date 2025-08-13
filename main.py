@@ -34,7 +34,7 @@ SELL_FLOAT = 0.99
 # 初始化公共客户端（用于取订单簿、市场列表）；缩短超时以避免卡住
 # public_cli = CoinonePublicClient(timeout=3)
 
-coinone_client_in = CoinoneClient(access_token="0c9193e1-4166-45f2-bcd5-b8767ed54fc1", secret_key="2087f88e-f821-4cb8-b5fe-954fad53277e", session=None, timeout=10)
+coinone_client_in = CoinoneClient(access_token="9f1aa4b6-fad8-40c2-986a-7d0b09373ee1", secret_key="90cefa57-c991-47f7-86ea-dc8562b4043d", session=None, timeout=10)
 coinone_client_out = CoinoneClient(access_token="6fa487d7-481f-47dc-86bd-be882d80d4c0", secret_key="03227e07-8cd5-4997-bd30-71c872316b8b", session=None, timeout=10)
 
 # 请求频率限制
@@ -230,7 +230,7 @@ def transfer():
                 )
             else:
                 order_id_b = place_limit_order(
-                    coinone_client_in, side="BUY",
+                    coinone_client_in, price=None, side="BUY",
                     amount=f"{BUY_AMOUNT}", type_="MARKET"
                 )
                 
@@ -238,17 +238,17 @@ def transfer():
             # 4) 简单轮询订单状态（占位，需你在私有代理补充查询/撤单接口）
             time.sleep(0.5)
             if order_id_a:
-                cancel_order(coinone_client_in, QUOTE, CURRENCY)
+                coinone_client_in.cancel_order(QUOTE,CURRENCY)
             if order_id_b:
-                cancel_order(coinone_client_out, QUOTE, CURRENCY)
+                coinone_client_out.cancel_order(QUOTE,CURRENCY)
             console.print("[yellow]已尝试撤单（请实现远端撤单接口以生效）[/yellow]")
             # time.sleep(2)
         except Exception as e:
             # 出现任何异常尽力撤单
             if order_id_a:
-                cancel_order(coinone_client_in, QUOTE, CURRENCY)
+                coinone_client_in.cancel_order(QUOTE,CURRENCY)
             if order_id_b:
-                cancel_order(coinone_client_out, QUOTE, CURRENCY)
+                coinone_client_out.cancel_order(QUOTE,CURRENCY)
             raise e
 
 
@@ -277,4 +277,6 @@ def balance():
 
 if __name__ == "__main__":
     app()
+    # dd = place_limit_order(coinone_client_in, side="BUY", amount=f"1000000", type_="MARKET")
+    # print(dd)
     # 运行时可以通过 `python main.py balance` 或 `python main.py transfer` 来调用不同的命令
