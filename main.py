@@ -259,9 +259,9 @@ def balance():
     def make_layout():
         bal_a = fetch_balances(coinone_client_in)
         bal_b = fetch_balances(coinone_client_out)
-        table_a = build_balance_table("账户A 余额（非零）", bal_a)
-        table_b = build_balance_table("账户B 余额（非零）", bal_b)
-        return Columns([table_a, table_b], equal=True, expand=True)
+        table_a = build_balance_table("收款帐户", bal_a)
+        table_b = build_balance_table("提币账户", bal_b)
+        return Columns([table_b, table_a], equal=True, expand=True)
 
     console.print("[cyan]启动余额与候选监控…[/cyan]")
     with Live(make_layout(), refresh_per_second=2, console=console) as live:
